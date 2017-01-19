@@ -10,10 +10,7 @@ package shared;
  * @author al1as
  */
 public class Ship {
-    private int size = 1;
-    
-    public Ship() {
-    }
+    private int size = 1; // how many alive cells has ship from 0 to 4
     
     public int getSize() {
         return size;
@@ -21,5 +18,9 @@ public class Ship {
     
     public void incSize() {
         size++;
+    }
+    
+    public void decSize() {
+        size--;
     }
 }

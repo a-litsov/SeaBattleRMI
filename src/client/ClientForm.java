@@ -7,21 +7,18 @@ package client;
 
 import java.net.MalformedURLException;
 import java.rmi.*;
-import java.rmi.server.*;
 import server.IServerConsole;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import shared.*;
+import shared.battleField;
 
 /**
  *
  * @author al1as
  */
 public class ClientForm extends javax.swing.JFrame {
-    boolean isConnected;
-    IServerConsole serverObject;
+    IClientService clientService;
     /**
      * Creates new form clientForm
      */
@@ -29,28 +26,8 @@ public class ClientForm extends javax.swing.JFrame {
         initComponents();
         enemyTable.setEnabled(false);
         myTable.setEnabled(false);
-        start();
+        clientService = new ClientService(myTable, enemyTable, saveButton, statusLabel);
     }
-    
-    private void start() throws RemoteException, MalformedURLException, NotBoundException {
-        UUID id = UUID.randomUUID();
-        IClientService service = new ClientService(); 
-        String serviceName = "rmi://localhost/SeaBattleClientService" + id.toString();
-        Naming.rebind(serviceName, service);
-        
-        String objectName = "rmi://localhost/SeaBattleRMIService";
-        System.out.println("Starting HelloRMI client...");
-        serverObject = (IServerConsole)Naming.lookup(objectName);
-        System.out.println("Getting remote object is done!");
-        isConnected = serverObject.Connect(id.toString());
-        if(isConnected) {
-            myTable.setEnabled(true);
-            saveButton.setEnabled(true);
-            System.out.println("Server is connected");
-        } else
-            System.out.println("Error while server connecting");
-    }
-    
     
     
     /**
@@ -98,6 +75,7 @@ public class ClientForm extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        enemyTable.setEnabled(false);
         jScrollPane2.setViewportView(enemyTable);
         if (enemyTable.getColumnModel().getColumnCount() > 0) {
             enemyTable.getColumnModel().getColumn(0).setResizable(false);

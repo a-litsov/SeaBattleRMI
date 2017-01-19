@@ -10,4 +10,5 @@ import java.rmi.*;
  * @author al1as
  */
 public interface IClientService extends Remote {
+    public void getReadyForTurn() throws RemoteException;
 }
