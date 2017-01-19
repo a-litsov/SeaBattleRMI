@@ -7,11 +7,11 @@ package client;
 
 import java.net.MalformedURLException;
 import java.rmi.*;
-import server.IServerConsole;
-import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import shared.battleField;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -24,9 +24,27 @@ public class ClientForm extends javax.swing.JFrame {
      */
     public ClientForm() throws RemoteException, MalformedURLException, NotBoundException {
         initComponents();
+        myTable.addMouseListener(new java.awt.event.MouseAdapter() {
+        @Override
+        public void mouseClicked(java.awt.event.MouseEvent evt) {
+            DefaultTableModel model = (DefaultTableModel)myTable.getModel();
+            int row = myTable.rowAtPoint(evt.getPoint());
+            int column = myTable.columnAtPoint(evt.getPoint());
+            if (row >= 1 && column >= 1 && myTable.isEnabled()) {
+                model.setValueAt("◼", row, column);
+            }
+        }});
+        setCentralAlignment(myTable, 11);
+        setCentralAlignment(enemyTable, 11);
         clientService = new ClientService(myTable, enemyTable, saveButton, turnButton, statusLabel);
     }
     
+    private void setCentralAlignment(javax.swing.JTable table, int columnCount) {
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+        for(int column = 0; column < columnCount; column++)
+            myTable.getColumnModel().getColumn(column).setCellRenderer(centerRenderer);       
+    }
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -109,7 +127,15 @@ public class ClientForm extends javax.swing.JFrame {
             new String [] {
                 "Title 1", "Title 2", "Title 3", "null", "Title 5", "null", "Title 7", "Title 8", "Title 9", "Title 10", "Title 11"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, true, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         myTable.setColumnSelectionAllowed(true);
         myTable.setEnabled(false);
         myTable.getTableHeader().setReorderingAllowed(false);
@@ -150,7 +176,7 @@ public class ClientForm extends javax.swing.JFrame {
             }
         });
 
-        statusLabel.setText("Статус");
+        statusLabel.setText(" ");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -200,7 +226,25 @@ public class ClientForm extends javax.swing.JFrame {
         try {
             turnButton.setEnabled(false);
             enemyTable.setEnabled(false);
-            clientService.makeTurn(row, column);
+            int attackStatus = clientService.makeTurn(row, column);
+            DefaultTableModel model = (DefaultTableModel)enemyTable.getModel();
+            if(attackStatus == -1)
+                model.setValueAt("◉", row, column);
+            else
+                model.setValueAt("✘", row, column);
+            String status = "";
+            switch(attackStatus) {
+                case -1:
+                    status = "Вы промахнулись!";
+                    break;
+                case 0:
+                    status = "Корабль соперника убит!";
+                    break;
+                case 1:
+                    status = "Корабль соперника поврежден!";
+                    break;
+            }
+        statusLabel.setText(status);
             // Переместить в проверку попадания
         } catch (RemoteException E) {
             

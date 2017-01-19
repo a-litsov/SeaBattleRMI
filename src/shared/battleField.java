@@ -26,7 +26,7 @@ public class battleField implements Serializable{
                 String content = "";
                 if(value != null)
                     content = value.toString();
-                if(content.equals("*")) {
+                if(content.equals("◼")) {
                     Cell c = new Cell(i, j);
                     Ship sh;
                     if(field.get(c) == null) {
@@ -62,7 +62,7 @@ public class battleField implements Serializable{
             content = value.toString();
         }
         boolean res = false;
-        while(content.equals("*") && sh.getSize() < maxShipSize && newCell.row < 11) {
+        while(content.equals("◼") && sh.getSize() < maxShipSize && newCell.row < 11) {
             sh.incSize();
             field.put(newCell, sh);
             res = true;
@@ -88,7 +88,7 @@ public class battleField implements Serializable{
             content = value.toString();
         }
         boolean res = false;
-        while(content.equals("*") && sh.getSize() < maxShipSize && newCell.column < 11) {
+        while(content.equals("◼") && sh.getSize() < maxShipSize && newCell.column < 11) {
             sh.incSize();
             field.put(newCell, sh);
             res = true;

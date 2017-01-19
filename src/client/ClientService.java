@@ -62,13 +62,16 @@ public class ClientService extends UnicastRemoteObject implements IClientService
         statusLabel.setText(statusLabel.getText() + "Ваш ход!");
     }
     
-    public void makeTurn(int row, int column) throws RemoteException {
-        serverObject.makeTurn(row, column);
+    public int makeTurn(int row, int column) throws RemoteException {
+        return serverObject.makeTurn(row, column);
     }
     
     public void takeDamage(int row, int column, int damage) throws RemoteException {
         DefaultTableModel model = (DefaultTableModel)myTable.getModel();
-        model.setValueAt("x", row, column);
+        if(damage == -1)
+            model.setValueAt("◉", row, column);
+        else
+            model.setValueAt("✘", row, column);
         String status = "";
         switch(damage) {
             case -1:
