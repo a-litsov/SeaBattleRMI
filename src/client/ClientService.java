@@ -11,8 +11,8 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.UUID;
+import javax.swing.table.DefaultTableModel;
 import server.IServerConsole;
-import shared.battleField;
 
 /**
  *
@@ -59,7 +59,29 @@ public class ClientService extends UnicastRemoteObject implements IClientService
     public void getReadyForTurn() throws RemoteException {
         enemyTable.setEnabled(true);
         turnButton.setEnabled(true);
-        statusLabel.setText("Your turn now!");
+        statusLabel.setText(statusLabel.getText() + "Ваш ход!");
+    }
+    
+    public void makeTurn(int row, int column) throws RemoteException {
+        serverObject.makeTurn(row, column);
+    }
+    
+    public void takeDamage(int row, int column, int damage) throws RemoteException {
+        DefaultTableModel model = (DefaultTableModel)myTable.getModel();
+        model.setValueAt("x", row, column);
+        String status = "";
+        switch(damage) {
+            case -1:
+                status = "Соперник промахнулся!";
+                break;
+            case 0:
+                status = "Ваш корабль убит! Соперник ходит снова..";
+                break;
+            case 1:
+                status = "Ваш корабль поврежден! Соперник ходит снова..";
+                break;
+        }
+        statusLabel.setText(status);
     }
     
     public void sendTableData(Object[][] data) throws RemoteException {

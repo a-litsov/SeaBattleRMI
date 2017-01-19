@@ -38,6 +38,17 @@ public class battleField implements Serializable{
             }
         return true; // signals if field correct or not
     }
+    
+    public Ship getAndRemoveShip(int row, int column) {
+        Cell tmpCell = new Cell(row, column);
+        Ship tmpShip = field.get(tmpCell);
+        if(tmpShip != null) {
+            // may be error here (not decreasing in hash, but decreasing in object here)
+            tmpShip.decSize();
+            field.remove(tmpCell);
+        }
+        return tmpShip;
+    }
    
     private boolean scanByColumn(Cell c, Ship sh, Object[][] data) {
         if (c.row + 1 > 10) {

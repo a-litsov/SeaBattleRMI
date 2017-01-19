@@ -24,10 +24,6 @@ public class ClientForm extends javax.swing.JFrame {
      */
     public ClientForm() throws RemoteException, MalformedURLException, NotBoundException {
         initComponents();
-        enemyTable.setEnabled(false);
-        myTable.setEnabled(false);
-        saveButton.setEnabled(false);
-        turnButton.setEnabled(false);
         clientService = new ClientService(myTable, enemyTable, saveButton, turnButton, statusLabel);
     }
     
@@ -78,6 +74,7 @@ public class ClientForm extends javax.swing.JFrame {
             }
         });
         enemyTable.setColumnSelectionAllowed(true);
+        enemyTable.setEnabled(false);
         enemyTable.getTableHeader().setReorderingAllowed(false);
         jScrollPane2.setViewportView(enemyTable);
         enemyTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -114,6 +111,7 @@ public class ClientForm extends javax.swing.JFrame {
             }
         ));
         myTable.setColumnSelectionAllowed(true);
+        myTable.setEnabled(false);
         myTable.getTableHeader().setReorderingAllowed(false);
         jScrollPane3.setViewportView(myTable);
         myTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -132,6 +130,7 @@ public class ClientForm extends javax.swing.JFrame {
         }
 
         saveButton.setText("Сохранить поле");
+        saveButton.setEnabled(false);
         saveButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 saveButtonMouseClicked(evt);
@@ -196,7 +195,16 @@ public class ClientForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void turnButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_turnButtonActionPerformed
-        // TODO add your handling code here:
+        int row = enemyTable.getSelectedRow();
+        int column = enemyTable.getSelectedColumn();
+        try {
+            turnButton.setEnabled(false);
+            enemyTable.setEnabled(false);
+            clientService.makeTurn(row, column);
+            // Переместить в проверку попадания
+        } catch (RemoteException E) {
+            
+        }
     }//GEN-LAST:event_turnButtonActionPerformed
 
     public Object[][] getTableData (javax.swing.JTable table) {
@@ -209,10 +217,11 @@ public class ClientForm extends javax.swing.JFrame {
         return tableData;
     }
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-          Object[][] data = getTableData(myTable);
+        Object[][] data = getTableData(myTable);
         try {
             saveButton.setEnabled(false);
             myTable.setEnabled(false);
+            // Add checking result later (rules for field)
             clientService.sendTableData(data);
         } catch(RemoteException e) {
             System.out.println("Error!Can't send battlefield to server!");

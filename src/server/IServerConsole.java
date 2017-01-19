@@ -15,4 +15,5 @@ import shared.battleField;
 public interface IServerConsole  extends Remote{
     public int registerClient(String clientServiceName) throws RemoteException;  
     public void sendTableData(Object[][] data, int playerId) throws RemoteException;
+    public int makeTurn(int row, int column) throws RemoteException;
 }

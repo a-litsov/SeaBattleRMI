@@ -9,6 +9,8 @@
             <file>file:/Users/al1as/study/java/rmi/SeaBattleRMI/src/client/IClientService.java</file>
             <file>file:/Users/al1as/study/java/rmi/SeaBattleRMI/src/server/IServerConsole.java</file>
             <file>file:/Users/al1as/study/java/rmi/SeaBattleRMI/src/client/ClientService.java</file>
+            <file>file:/Users/al1as/study/java/rmi/SeaBattleRMI/src/shared/Cell.java</file>
+            <file>file:/Users/al1as/study/java/rmi/SeaBattleRMI/src/shared/Ship.java</file>
         </group>
     </open-files>
 </project-private>
