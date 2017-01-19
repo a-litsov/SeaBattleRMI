@@ -24,8 +24,8 @@ public class ClientForm extends javax.swing.JFrame {
      */
     public ClientForm() throws RemoteException, MalformedURLException, NotBoundException {
         initComponents();
-        enemyTable.setEnabled(false);
-        myTable.setEnabled(false);
+//        enemyTable.setEnabled(false);
+//        myTable.setEnabled(false);
         clientService = new ClientService(myTable, enemyTable, saveButton, statusLabel);
     }
     
@@ -75,8 +75,10 @@ public class ClientForm extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        enemyTable.setEnabled(false);
+        enemyTable.setColumnSelectionAllowed(true);
+        enemyTable.getTableHeader().setReorderingAllowed(false);
         jScrollPane2.setViewportView(enemyTable);
+        enemyTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         if (enemyTable.getColumnModel().getColumnCount() > 0) {
             enemyTable.getColumnModel().getColumn(0).setResizable(false);
             enemyTable.getColumnModel().getColumn(1).setResizable(false);
@@ -108,8 +110,17 @@ public class ClientForm extends javax.swing.JFrame {
             new String [] {
                 "Title 1", "Title 2", "Title 3", "null", "Title 5", "null", "Title 7", "Title 8", "Title 9", "Title 10", "Title 11"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         myTable.setColumnSelectionAllowed(true);
+        myTable.getTableHeader().setReorderingAllowed(false);
         jScrollPane3.setViewportView(myTable);
         myTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         if (myTable.getColumnModel().getColumnCount() > 0) {

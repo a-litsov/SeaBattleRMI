@@ -15,4 +15,17 @@ public class Point {
         this.x = x;
         this.y = y;
     }
+    
+    public boolean equals(Object o){
+        if(o == null)
+            return false;
+        if(!(o instanceof Point))
+            return false;
+        Point other = (Point)o;
+        return (x == other.x) && (y == other.y);
+    }
+    
+    public int hashCode() {
+        return x * 31 + y;
+    }
 }

@@ -52,7 +52,7 @@ public class ClientService extends UnicastRemoteObject implements IClientService
     
     @Override
     public void getReadyForTurn() throws RemoteException {
-        myTable.setEnabled(true);
+        enemyTable.setEnabled(true);
         saveButton.setEnabled(true);   
         statusLabel.setText("Your turn now!");
     }

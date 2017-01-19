@@ -228,7 +228,7 @@
               </Table>
             </Property>
             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
-              <TableColumnModel selectionModel="0">
+              <TableColumnModel selectionModel="1">
                 <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
                   <Title/>
                   <Editor/>
@@ -286,9 +286,9 @@
                 </Column>
               </TableColumnModel>
             </Property>
-            <Property name="enabled" type="boolean" value="false"/>
+            <Property name="columnSelectionAllowed" type="boolean" value="true"/>
             <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
-              <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
+              <TableHeader reorderingAllowed="false" resizingAllowed="true"/>
             </Property>
           </Properties>
         </Component>
@@ -305,7 +305,7 @@
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
               <Table columnCount="11" rowCount="11">
-                <Column editable="true" title="Title 1" type="java.lang.Object">
+                <Column editable="false" title="Title 1" type="java.lang.Object">
                   <Data value="null"/>
                   <Data value="1"/>
                   <Data value="2"/>
@@ -318,7 +318,7 @@
                   <Data value="9"/>
                   <Data value="10"/>
                 </Column>
-                <Column editable="true" title="Title 2" type="java.lang.Object">
+                <Column editable="false" title="Title 2" type="java.lang.Object">
                   <Data value="&#x410;"/>
                   <Data value="null"/>
                   <Data value="null"/>
@@ -331,7 +331,7 @@
                   <Data value="null"/>
                   <Data value="null"/>
                 </Column>
-                <Column editable="true" title="Title 3" type="java.lang.Object">
+                <Column editable="false" title="Title 3" type="java.lang.Object">
                   <Data value="&#x411;"/>
                   <Data value="null"/>
                   <Data value="null"/>
@@ -344,7 +344,7 @@
                   <Data value="null"/>
                   <Data value="null"/>
                 </Column>
-                <Column editable="true" title="null" type="java.lang.Object">
+                <Column editable="false" title="null" type="java.lang.Object">
                   <Data value="&#x412;"/>
                   <Data value="null"/>
                   <Data value="null"/>
@@ -357,7 +357,7 @@
                   <Data value="null"/>
                   <Data value="null"/>
                 </Column>
-                <Column editable="true" title="Title 5" type="java.lang.Object">
+                <Column editable="false" title="Title 5" type="java.lang.Object">
                   <Data value="&#x413;"/>
                   <Data value="null"/>
                   <Data value="null"/>
@@ -370,7 +370,7 @@
                   <Data value="null"/>
                   <Data value="null"/>
                 </Column>
-                <Column editable="true" title="null" type="java.lang.Object">
+                <Column editable="false" title="null" type="java.lang.Object">
                   <Data value="&#x414;"/>
                   <Data value="null"/>
                   <Data value="null"/>
@@ -383,7 +383,7 @@
                   <Data value="null"/>
                   <Data value="null"/>
                 </Column>
-                <Column editable="true" title="Title 7" type="java.lang.Object">
+                <Column editable="false" title="Title 7" type="java.lang.Object">
                   <Data value="&#x415;"/>
                   <Data value="null"/>
                   <Data value="null"/>
@@ -396,7 +396,7 @@
                   <Data value="null"/>
                   <Data value="null"/>
                 </Column>
-                <Column editable="true" title="Title 8" type="java.lang.Object">
+                <Column editable="false" title="Title 8" type="java.lang.Object">
                   <Data value="&#x416;"/>
                   <Data value="null"/>
                   <Data value="null"/>
@@ -409,7 +409,7 @@
                   <Data value="null"/>
                   <Data value="null"/>
                 </Column>
-                <Column editable="true" title="Title 9" type="java.lang.Object">
+                <Column editable="false" title="Title 9" type="java.lang.Object">
                   <Data value="&#x417;"/>
                   <Data value="null"/>
                   <Data value="null"/>
@@ -422,7 +422,7 @@
                   <Data value="null"/>
                   <Data value="null"/>
                 </Column>
-                <Column editable="true" title="Title 10" type="java.lang.Object">
+                <Column editable="false" title="Title 10" type="java.lang.Object">
                   <Data value="&#x418;"/>
                   <Data value="null"/>
                   <Data value="null"/>
@@ -435,7 +435,7 @@
                   <Data value="null"/>
                   <Data value="null"/>
                 </Column>
-                <Column editable="true" title="Title 11" type="java.lang.Object">
+                <Column editable="false" title="Title 11" type="java.lang.Object">
                   <Data value="&#x41a;"/>
                   <Data value="null"/>
                   <Data value="null"/>
@@ -511,7 +511,7 @@
             </Property>
             <Property name="columnSelectionAllowed" type="boolean" value="true"/>
             <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
-              <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
+              <TableHeader reorderingAllowed="false" resizingAllowed="true"/>
             </Property>
           </Properties>
         </Component>

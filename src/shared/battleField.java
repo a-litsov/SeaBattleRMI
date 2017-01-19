@@ -35,11 +35,8 @@ public class battleField {
    
     
     private void scanNear(Point p, Ship sh, JTable table) {
-        if(sh.getSize() > 3)
-            return;
         boolean flag = false;
-        Point newPoint;
-        newPoint = new Point(p.x + 1, p.y);
+        Point newPoint = new Point(p.x + 1, p.y);
         Object value = (String)table.getModel().getValueAt(newPoint.x, newPoint.y);
         String content = "";
         if(value != null)
