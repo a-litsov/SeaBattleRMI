@@ -56,7 +56,7 @@ public class ServerConsole extends UnicastRemoteObject implements IServerConsole
         } catch (MalformedURLException ex) {
             Logger.getLogger(ServerConsole.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return playersConnected;
+        return playersConnected-1;
     }
     
     

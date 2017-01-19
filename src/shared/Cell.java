@@ -9,23 +9,23 @@ package shared;
  *
  * @author al1as
  */
-public class Point {
-    int x, y;
-    public Point(int x, int y) {
-        this.x = x;
-        this.y = y;
+public class Cell {
+    int row, column;
+    public Cell(int row, int column) {
+        this.row = row;
+        this.column = column;
     }
     
     public boolean equals(Object o){
         if(o == null)
             return false;
-        if(!(o instanceof Point))
+        if(!(o instanceof Cell))
             return false;
-        Point other = (Point)o;
-        return (x == other.x) && (y == other.y);
+        Cell other = (Cell)o;
+        return (row == other.row) && (column == other.column);
     }
     
     public int hashCode() {
-        return x * 31 + y;
+        return row * 31 + column;
     }
 }

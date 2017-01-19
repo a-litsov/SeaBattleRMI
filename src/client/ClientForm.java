@@ -110,15 +110,7 @@ public class ClientForm extends javax.swing.JFrame {
             new String [] {
                 "Title 1", "Title 2", "Title 3", "null", "Title 5", "null", "Title 7", "Title 8", "Title 9", "Title 10", "Title 11"
             }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+        ));
         myTable.setColumnSelectionAllowed(true);
         myTable.getTableHeader().setReorderingAllowed(false);
         jScrollPane3.setViewportView(myTable);
@@ -206,7 +198,8 @@ public class ClientForm extends javax.swing.JFrame {
     }//GEN-LAST:event_turnButtonActionPerformed
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        battleField field = new battleField(myTable);
+        battleField field = new battleField();
+        field.initByTable(myTable);
         saveButton.setEnabled(false);
         // TODO add your handling code here:
     }//GEN-LAST:event_saveButtonActionPerformed

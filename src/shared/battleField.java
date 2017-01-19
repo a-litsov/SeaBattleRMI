@@ -13,61 +13,86 @@ import javax.swing.JTable;
  * @author al1as
  */
 public class battleField {
-    Hashtable<Point, Ship> field = new Hashtable<Point, Ship>();
-    public battleField(JTable table) {
+    final int maxShipSize = 4;
+    final int countShipsBySize[] = {0, 4, 3, 2, 1};
+    Hashtable<Cell, Ship> field = new Hashtable<Cell, Ship>();
+    
+    public boolean initByTable(JTable table) {
+        boolean res = true;
         for(int i = 1; i < 11; i++)
             for(int j = 1; j < 11; j++) {
-                Object value = (String)table.getModel().getValueAt(i, j);
+                Object value = (Object)table.getModel().getValueAt(i, j);
                 String content = "";
                 if(value != null)
                     content = value.toString();
                 if(content.equals("*")) {
-                    Point p = new Point(i, j);
+                    Cell c = new Cell(i, j);
                     Ship sh;
-                    if(field.get(p) == null) {
+                    if(field.get(c) == null) {
                         sh = new Ship();
-                        field.put(p, sh);
-                        scanNear(p, sh, table);
+                        field.put(c, sh);
+                        scanNear(c, sh, table);
                     } 
                 }
             }
+        return true; // signals if field correct or not
     }
    
-    
-    private void scanNear(Point p, Ship sh, JTable table) {
-        boolean flag = false;
-        Point newPoint = new Point(p.x + 1, p.y);
-        Object value = (String)table.getModel().getValueAt(newPoint.x, newPoint.y);
+    private boolean scanByColumn(Cell c, Ship sh, JTable table) {
+        if (c.row + 1 > 10) {
+            return false;
+        }
+        Cell newCell = new Cell(c.row + 1, c.column);
         String content = "";
-        if(value != null)
-            content = value.toString();
-        while(content.equals("*") && sh.getSize() < 4 && p.x < 11) {
-            field.put(newPoint, sh);
-            sh.incSize();
-            newPoint.x++;
-            value = (String)table.getModel().getValueAt(newPoint.x, newPoint.y);
-            content = "";
-            if(value != null)
-                content = value.toString();
-            flag = true;
-        }
-        if(flag) return;
-        newPoint = new Point(p.x, p.y + 1);
-        value = (String)table.getModel().getValueAt(newPoint.x, newPoint.y);
+        Object value = (Object)table.getModel().getValueAt(newCell.row, newCell.column);
         content = "";
-        if(value != null)
+        if (value != null) {
             content = value.toString();
-        newPoint = new Point(p.x, p.y + 1);
-        while(content.equals("*") && sh.getSize() < 4 && p.y < 11) {
-            field.put(new Point(p.x, p.y + 1), sh);
-            sh.incSize();
-            newPoint.y++;
-            value = (String)table.getModel().getValueAt(newPoint.x, newPoint.y);
-            content = "";
-            if(value != null)
-                content = value.toString();
-
         }
+        boolean res = false;
+        while(content.equals("*") && sh.getSize() < maxShipSize && newCell.row < 11) {
+            sh.incSize();
+            field.put(newCell, sh);
+            res = true;
+            
+            newCell = new Cell(newCell.row + 1, newCell.column);
+            value = (Object) table.getModel().getValueAt(newCell.row, newCell.column);
+            content = "";
+            if (value != null) {
+                content = value.toString();
+            }
+        }
+        return res;
+    }
+    
+    private boolean scanByRow(Cell c, Ship sh, JTable table) {
+        if(c.column + 1 > 10)
+            return false;
+        Cell newCell = new Cell(c.row, c.column + 1);
+        String content = "";
+        Object value = (Object)table.getModel().getValueAt(newCell.row, newCell.column);
+        content = "";
+        if (value != null) {
+            content = value.toString();
+        }
+        boolean res = false;
+        while(content.equals("*") && sh.getSize() < maxShipSize && newCell.column < 11) {
+            sh.incSize();
+            field.put(newCell, sh);
+            res = true;
+            
+            newCell = new Cell(newCell.row, newCell.column + 1);
+            value = (Object) table.getModel().getValueAt(newCell.row, newCell.column);
+            content = "";
+            if (value != null) {
+                content = value.toString();
+            }
+        }
+        return res;
+    }
+    private void scanNear(Cell c, Ship sh, JTable table) {
+        if(!scanByRow(c, sh, table))
+            scanByColumn(c, sh, table);
     }
     
 }

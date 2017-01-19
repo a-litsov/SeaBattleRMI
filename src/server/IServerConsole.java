@@ -12,5 +12,6 @@ import java.rmi.*;
  * @author al1as
  */
 public interface IServerConsole  extends Remote{
-    public int registerClient(String clientServiceName) throws RemoteException;    
+    public int registerClient(String clientServiceName) throws RemoteException;  
+    
 }
