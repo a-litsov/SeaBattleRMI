@@ -6,6 +6,7 @@
 package server;
 
 import java.rmi.*;
+import shared.battleField;
 
 /**
  *
@@ -13,5 +14,5 @@ import java.rmi.*;
  */
 public interface IServerConsole  extends Remote{
     public int registerClient(String clientServiceName) throws RemoteException;  
-    
+    public void sendTableData(Object[][] data, int playerId) throws RemoteException;
 }

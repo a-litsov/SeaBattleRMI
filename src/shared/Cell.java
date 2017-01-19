@@ -5,11 +5,13 @@
  */
 package shared;
 
+import java.io.Serializable;
+
 /**
  *
  * @author al1as
  */
-public class Cell {
+public class Cell implements Serializable {
     int row, column;
     public Cell(int row, int column) {
         this.row = row;

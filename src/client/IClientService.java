@@ -5,10 +5,12 @@
  */
 package client;
 import java.rmi.*;
+import shared.battleField;
 /**
  *
  * @author al1as
  */
 public interface IClientService extends Remote {
     public void getReadyForTurn() throws RemoteException;
+    public void sendTableData(Object[][] data) throws RemoteException;
 }

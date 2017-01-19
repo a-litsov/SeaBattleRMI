@@ -5,11 +5,13 @@
  */
 package shared;
 
+import java.io.Serializable;
+
 /**
  *
  * @author al1as
  */
-public class Ship {
+public class Ship implements Serializable {
     private int size = 1; // how many alive cells has ship from 0 to 4
     
     public int getSize() {

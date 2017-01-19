@@ -12,6 +12,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.UUID;
 import server.IServerConsole;
+import shared.battleField;
 
 /**
  *
@@ -21,17 +22,19 @@ public class ClientService extends UnicastRemoteObject implements IClientService
 
     javax.swing.JTable myTable, enemyTable;
     javax.swing.JButton saveButton;
+    javax.swing.JButton turnButton;
     javax.swing.JLabel statusLabel;
     
     IServerConsole serverObject;
     UUID id; // unique hash of client
     int playerId;
     
-    public ClientService(javax.swing.JTable myTable, javax.swing.JTable enemyTable, javax.swing.JButton saveButton, 
+    public ClientService(javax.swing.JTable myTable, javax.swing.JTable enemyTable, javax.swing.JButton saveButton, javax.swing.JButton turnButton,
                 javax.swing.JLabel statusLabel) throws RemoteException, MalformedURLException, NotBoundException {
         this.myTable = myTable;
         this.enemyTable = enemyTable;
         this.saveButton = saveButton;
+        this.turnButton = turnButton;
         this.statusLabel = statusLabel;
         
         id = UUID.randomUUID();
@@ -46,6 +49,8 @@ public class ClientService extends UnicastRemoteObject implements IClientService
         System.out.println("Registered to server with id: " + id.toString() + " and playerId: " + playerId);
         if(playerId != -1) {
             System.out.println("Connecting is done!");
+            myTable.setEnabled(true);
+            saveButton.setEnabled(true);
         } else
             System.out.println("Error while connecting..");
     }
@@ -53,7 +58,11 @@ public class ClientService extends UnicastRemoteObject implements IClientService
     @Override
     public void getReadyForTurn() throws RemoteException {
         enemyTable.setEnabled(true);
-        saveButton.setEnabled(true);   
+        turnButton.setEnabled(true);
         statusLabel.setText("Your turn now!");
+    }
+    
+    public void sendTableData(Object[][] data) throws RemoteException {
+        serverObject.sendTableData(data, playerId);
     }
 }

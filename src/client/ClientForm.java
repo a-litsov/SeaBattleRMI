@@ -24,9 +24,11 @@ public class ClientForm extends javax.swing.JFrame {
      */
     public ClientForm() throws RemoteException, MalformedURLException, NotBoundException {
         initComponents();
-//        enemyTable.setEnabled(false);
-//        myTable.setEnabled(false);
-        clientService = new ClientService(myTable, enemyTable, saveButton, statusLabel);
+        enemyTable.setEnabled(false);
+        myTable.setEnabled(false);
+        saveButton.setEnabled(false);
+        turnButton.setEnabled(false);
+        clientService = new ClientService(myTable, enemyTable, saveButton, turnButton, statusLabel);
     }
     
     
@@ -163,7 +165,7 @@ public class ClientForm extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(6, 6, 6)
                                 .addComponent(saveButton)
-                                .addGap(125, 125, 125)
+                                .addGap(217, 217, 217)
                                 .addComponent(turnButton))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 319, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -197,10 +199,25 @@ public class ClientForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_turnButtonActionPerformed
 
+    public Object[][] getTableData (javax.swing.JTable table) {
+        javax.swing.table.TableModel dtm = table.getModel();
+        int nRow = dtm.getRowCount(), nCol = dtm.getColumnCount();
+        Object[][] tableData = new Object[nRow][nCol];
+        for (int i = 0 ; i < nRow ; i++)
+            for (int j = 0 ; j < nCol ; j++)
+                tableData[i][j] = dtm.getValueAt(i,j);
+        return tableData;
+    }
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        battleField field = new battleField();
-        field.initByTable(myTable);
-        saveButton.setEnabled(false);
+          Object[][] data = getTableData(myTable);
+        try {
+            saveButton.setEnabled(false);
+            myTable.setEnabled(false);
+            clientService.sendTableData(data);
+        } catch(RemoteException e) {
+            System.out.println("Error!Can't send battlefield to server!");
+        }
+
         // TODO add your handling code here:
     }//GEN-LAST:event_saveButtonActionPerformed
 

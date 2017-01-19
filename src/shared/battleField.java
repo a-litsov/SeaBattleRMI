@@ -5,6 +5,7 @@
  */
 package shared;
 
+import java.io.Serializable;
 import java.util.Hashtable;
 import javax.swing.JTable;
 
@@ -12,16 +13,16 @@ import javax.swing.JTable;
  *
  * @author al1as
  */
-public class battleField {
+public class battleField implements Serializable{
     final int maxShipSize = 4;
     final int countShipsBySize[] = {0, 4, 3, 2, 1};
     Hashtable<Cell, Ship> field = new Hashtable<Cell, Ship>();
     
-    public boolean initByTable(JTable table) {
+    public boolean initByTableData(Object[][] data) {
         boolean res = true;
         for(int i = 1; i < 11; i++)
             for(int j = 1; j < 11; j++) {
-                Object value = (Object)table.getModel().getValueAt(i, j);
+                Object value = data[i][j];
                 String content = "";
                 if(value != null)
                     content = value.toString();
@@ -31,20 +32,20 @@ public class battleField {
                     if(field.get(c) == null) {
                         sh = new Ship();
                         field.put(c, sh);
-                        scanNear(c, sh, table);
+                        scanNear(c, sh, data);
                     } 
                 }
             }
         return true; // signals if field correct or not
     }
    
-    private boolean scanByColumn(Cell c, Ship sh, JTable table) {
+    private boolean scanByColumn(Cell c, Ship sh, Object[][] data) {
         if (c.row + 1 > 10) {
             return false;
         }
         Cell newCell = new Cell(c.row + 1, c.column);
         String content = "";
-        Object value = (Object)table.getModel().getValueAt(newCell.row, newCell.column);
+        Object value = data[newCell.row][newCell.column];
         content = "";
         if (value != null) {
             content = value.toString();
@@ -56,7 +57,7 @@ public class battleField {
             res = true;
             
             newCell = new Cell(newCell.row + 1, newCell.column);
-            value = (Object) table.getModel().getValueAt(newCell.row, newCell.column);
+            value = data[newCell.row][newCell.column];
             content = "";
             if (value != null) {
                 content = value.toString();
@@ -65,12 +66,12 @@ public class battleField {
         return res;
     }
     
-    private boolean scanByRow(Cell c, Ship sh, JTable table) {
+    private boolean scanByRow(Cell c, Ship sh, Object[][] data) {
         if(c.column + 1 > 10)
             return false;
         Cell newCell = new Cell(c.row, c.column + 1);
         String content = "";
-        Object value = (Object)table.getModel().getValueAt(newCell.row, newCell.column);
+        Object value = data[newCell.row][newCell.column];
         content = "";
         if (value != null) {
             content = value.toString();
@@ -82,7 +83,7 @@ public class battleField {
             res = true;
             
             newCell = new Cell(newCell.row, newCell.column + 1);
-            value = (Object) table.getModel().getValueAt(newCell.row, newCell.column);
+            value = data[newCell.row][newCell.column];
             content = "";
             if (value != null) {
                 content = value.toString();
@@ -90,9 +91,9 @@ public class battleField {
         }
         return res;
     }
-    private void scanNear(Cell c, Ship sh, JTable table) {
-        if(!scanByRow(c, sh, table))
-            scanByColumn(c, sh, table);
+    private void scanNear(Cell c, Ship sh, Object[][] data) {
+        if(!scanByRow(c, sh, data))
+            scanByColumn(c, sh, data);
     }
     
 }

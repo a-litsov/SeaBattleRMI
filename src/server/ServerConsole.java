@@ -12,14 +12,18 @@ import java.net.MalformedURLException;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import shared.battleField;
 /**
  *
  * @author al1as
  */
 public class ServerConsole extends UnicastRemoteObject implements IServerConsole {
+
     final int playersMaxCount = 2;
     int playersConnected = 0;
     int victimId;
+    battleField[] playersBF;
+    int countBF = 0;
     IClientService[] clientObjects;
     
     
@@ -44,13 +48,6 @@ public class ServerConsole extends UnicastRemoteObject implements IServerConsole
             System.out.println("Connected client with id:" + clientId);
             System.out.println("His internal id is:" + String.valueOf(playersConnected));
             playersConnected++;
-            // who's gonna make first turn?
-            if(playersConnected == playersMaxCount) {
-                Random rn = new Random();
-                int firstTurnPlayerId = rn.nextInt(playersConnected);
-                clientObjects[firstTurnPlayerId].getReadyForTurn();
-                victimId = playersConnected - firstTurnPlayerId - 1;
-            }
         } catch (NotBoundException ex) {
             Logger.getLogger(ServerConsole.class.getName()).log(Level.SEVERE, null, ex);
         } catch (MalformedURLException ex) {
@@ -59,6 +56,19 @@ public class ServerConsole extends UnicastRemoteObject implements IServerConsole
         return playersConnected-1;
     }
     
+    @Override
+    public void sendTableData(Object[][] data, int playerId) throws RemoteException {
+        playersBF = new battleField[2];
+        playersBF[playerId] = new battleField();
+        playersBF[playerId].initByTableData(data);
+        // giving the first turn
+        if(++countBF == playersMaxCount) {
+            Random rn = new Random();
+            int firstTurnPlayerId = rn.nextInt(playersConnected);
+            clientObjects[firstTurnPlayerId].getReadyForTurn();
+            victimId = playersConnected - firstTurnPlayerId - 1;
+        }
+    }
     
     public static void main (String[] args) throws Exception {
         ServerConsole server = new ServerConsole();  
