@@ -49,6 +49,10 @@ public class battleField implements Serializable{
         }
         return tmpShip;
     }
+    
+    public boolean isEmpty() {
+        return (field.size() == 0);
+    }
    
     private boolean scanByColumn(Cell c, Ship sh, Object[][] data) {
         if (c.row + 1 > 10) {

@@ -18,12 +18,15 @@ import javax.swing.table.DefaultTableModel;
  * @author al1as
  */
 public class ClientForm extends javax.swing.JFrame {
-    IClientService clientService;
+    ClientService clientService;
+    Object[][] myField, enemyField;
+    boolean showEnemyField = true;
     /**
      * Creates new form clientForm
      */
     public ClientForm() throws RemoteException, MalformedURLException, NotBoundException {
         initComponents();
+        viewEnemyFieldButton.setVisible(false);
         myTable.addMouseListener(new java.awt.event.MouseAdapter() {
         @Override
         public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -36,14 +39,14 @@ public class ClientForm extends javax.swing.JFrame {
         }});
         setCentralAlignment(myTable, 11);
         setCentralAlignment(enemyTable, 11);
-        clientService = new ClientService(myTable, enemyTable, saveButton, turnButton, statusLabel);
+        clientService = new ClientService(myTable, enemyTable, saveButton, turnButton, viewEnemyFieldButton, statusLabel, gameResultLabel);
     }
     
     private void setCentralAlignment(javax.swing.JTable table, int columnCount) {
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
         for(int column = 0; column < columnCount; column++)
-            myTable.getColumnModel().getColumn(column).setCellRenderer(centerRenderer);       
+            table.getColumnModel().getColumn(column).setCellRenderer(centerRenderer);       
     }
     
     /**
@@ -62,6 +65,8 @@ public class ClientForm extends javax.swing.JFrame {
         saveButton = new javax.swing.JButton();
         turnButton = new javax.swing.JButton();
         statusLabel = new javax.swing.JLabel();
+        gameResultLabel = new javax.swing.JLabel();
+        viewEnemyFieldButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -178,6 +183,16 @@ public class ClientForm extends javax.swing.JFrame {
 
         statusLabel.setText(" ");
 
+        gameResultLabel.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
+        gameResultLabel.setText(" ");
+
+        viewEnemyFieldButton.setText("Посмотреть поле соперника");
+        viewEnemyFieldButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewEnemyFieldButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -186,20 +201,26 @@ public class ClientForm extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 319, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(37, 37, 37)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(turnButton)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 58, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(6, 6, 6)
-                                .addComponent(saveButton)
-                                .addGap(217, 217, 217)
-                                .addComponent(turnButton))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 319, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(37, 37, 37)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(47, 47, 47)
-                        .addComponent(statusLabel)))
-                .addContainerGap(51, Short.MAX_VALUE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(saveButton)
+                                    .addComponent(viewEnemyFieldButton, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(statusLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(18, 18, 18)))
+                        .addComponent(gameResultLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(63, 63, 63))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -212,9 +233,15 @@ public class ClientForm extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(saveButton)
                     .addComponent(turnButton))
-                .addGap(18, 18, 18)
-                .addComponent(statusLabel)
-                .addContainerGap(61, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(gameResultLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 83, Short.MAX_VALUE)
+                        .addComponent(statusLabel))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(viewEnemyFieldButton)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
 
         pack();
@@ -245,38 +272,50 @@ public class ClientForm extends javax.swing.JFrame {
                     break;
             }
         statusLabel.setText(status);
-            // Переместить в проверку попадания
         } catch (RemoteException E) {
             
         }
     }//GEN-LAST:event_turnButtonActionPerformed
 
-    public Object[][] getTableData (javax.swing.JTable table) {
-        javax.swing.table.TableModel dtm = table.getModel();
-        int nRow = dtm.getRowCount(), nCol = dtm.getColumnCount();
-        Object[][] tableData = new Object[nRow][nCol];
-        for (int i = 0 ; i < nRow ; i++)
-            for (int j = 0 ; j < nCol ; j++)
-                tableData[i][j] = dtm.getValueAt(i,j);
-        return tableData;
-    }
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        Object[][] data = getTableData(myTable);
         try {
             saveButton.setEnabled(false);
             myTable.setEnabled(false);
             // Add checking result later (rules for field)
-            clientService.sendTableData(data);
+            clientService.sendTableData();
         } catch(RemoteException e) {
             System.out.println("Error!Can't send battlefield to server!");
         }
-
         // TODO add your handling code here:
     }//GEN-LAST:event_saveButtonActionPerformed
 
+    
     private void saveButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saveButtonMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_saveButtonMouseClicked
+
+    private void dataToMyTable(Object[][] data) {
+        DefaultTableModel model = (DefaultTableModel)myTable.getModel();
+        for(int i = 1; i < 11; i++)
+            for(int j = 1; j < 11; j++)
+                if(data[i][j] != null)
+                    model.setValueAt(data[i][j].toString(), i, j);
+                else
+                    model.setValueAt("", i, j);
+    }
+    
+    private void viewEnemyFieldButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewEnemyFieldButtonActionPerformed
+        if(showEnemyField) {
+            myField = clientService.convertTableData(myTable);
+            dataToMyTable(clientService.enemyField);
+            viewEnemyFieldButton.setText("Посмотреть мое поле");
+            showEnemyField = !showEnemyField;
+        } else {
+            dataToMyTable(myField);
+            viewEnemyFieldButton.setText("Посмотреть поле соперника");
+            showEnemyField = !showEnemyField;
+        }
+    }//GEN-LAST:event_viewEnemyFieldButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -324,11 +363,13 @@ public class ClientForm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable enemyTable;
+    private javax.swing.JLabel gameResultLabel;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable myTable;
     private javax.swing.JButton saveButton;
     private javax.swing.JLabel statusLabel;
     private javax.swing.JButton turnButton;
+    private javax.swing.JButton viewEnemyFieldButton;
     // End of variables declaration//GEN-END:variables
 }

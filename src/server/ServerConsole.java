@@ -84,14 +84,25 @@ public class ServerConsole extends UnicastRemoteObject implements IServerConsole
         }
         // send info to victim
         clientObjects[victimId].takeDamage(row, column, res);
-        // choose whose next turn
-        int nextAttacker = playersMaxCount - victimId - 1;
-        if(res < 0) {
-            nextAttacker = victimId;
-            victimId = playersMaxCount - nextAttacker - 1;  
+        // is he winner?
+        if(playersBF[victimId].isEmpty()) {
+            clientObjects[victimId].makeLooser();
+            clientObjects[playersMaxCount - victimId - 1].makeWinner();
+        } else {
+            // choose whose next turn
+            int nextAttacker = playersMaxCount - victimId - 1;
+            if(res < 0) {
+                nextAttacker = victimId;
+                victimId = playersMaxCount - nextAttacker - 1;  
+            }
+            clientObjects[nextAttacker].getReadyForTurn();    
         }
-        clientObjects[nextAttacker].getReadyForTurn();    
         return res;
+    }
+    
+    public Object[][] getEnemyFiled(int enemyId) throws RemoteException {
+        Object[][] data = clientObjects[enemyId].getTableData();
+        return data;
     }
     
     public static void main (String[] args) throws Exception {
