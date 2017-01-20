@@ -5,7 +5,6 @@
  */
 package client;
 import java.rmi.*;
-import shared.battleField;
 /**
  *
  * @author al1as

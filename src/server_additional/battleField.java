@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package shared;
+package server_additional;
 
 import java.io.Serializable;
 import java.util.Hashtable;
@@ -37,6 +37,9 @@ public class battleField implements Serializable{
                     } 
                 }
             }
+        for(int i = 1; i < 5; i++)
+            if(countShipsBySize[i] != maxCountShipsBySize[i])
+                return false;
         return true;
     }
     

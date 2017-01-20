@@ -12,8 +12,8 @@ import java.net.MalformedURLException;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import shared.Ship;
-import shared.battleField;
+import server_additional.Ship;
+import server_additional.battleField;
 /**
  *
  * @author al1as

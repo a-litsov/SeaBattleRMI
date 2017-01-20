@@ -6,7 +6,7 @@
 package server;
 
 import java.rmi.*;
-import shared.battleField;
+import server_additional.battleField;
 
 /**
  *
