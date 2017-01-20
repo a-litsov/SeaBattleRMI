@@ -15,7 +15,8 @@ import javax.swing.JTable;
  */
 public class battleField implements Serializable{
     final int maxShipSize = 4;
-    final int countShipsBySize[] = {0, 4, 3, 2, 1};
+    final int maxCountShipsBySize[] = {0, 4, 3, 2, 1}; 
+    int countShipsBySize[] = {0, 0, 0, 0, 0};
     Hashtable<Cell, Ship> field = new Hashtable<Cell, Ship>();
     
     public boolean initByTableData(Object[][] data) {
@@ -88,7 +89,7 @@ public class battleField implements Serializable{
             }
             sh.incSize();
             field.put(c, sh);
-            res = 1; //found ship
+            res = sh.getSize(); //found ship
             // res = -1 if error and return
             
             c = new Cell(c.row + 1, c.column);
@@ -126,7 +127,7 @@ public class battleField implements Serializable{
             sh.incSize();
             field.put(c, sh);
             if(sh.getSize() > 1)
-                res = 1; //found ship
+                res = sh.getSize(); //found ship
             // res = -1 if error and return
             
             c = new Cell(c.row, c.column + 1);
@@ -153,6 +154,10 @@ public class battleField implements Serializable{
                 if(flag == -1)
                     return false;
             }
+        // flag - размер текущего корабля
+        countShipsBySize[flag]++;
+        if(countShipsBySize[flag] > maxCountShipsBySize[flag])
+            return false;
         return true;
     }
     

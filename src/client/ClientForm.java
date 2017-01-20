@@ -85,7 +85,7 @@ public class ClientForm extends javax.swing.JFrame {
                 {"10", null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "null", "Title 5", "null", "Title 7", "Title 8", "Title 9", "Title 10", "Title 11"
+                " ", "", "", "", "", "", "", "", "", "", ""
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -130,11 +130,11 @@ public class ClientForm extends javax.swing.JFrame {
                 {"10", null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "null", "Title 5", "null", "Title 7", "Title 8", "Title 9", "Title 10", "Title 11"
+                "", "", "", "", "", "", " ", "", "", "", ""
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, true, false, false
+                false, false, false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
