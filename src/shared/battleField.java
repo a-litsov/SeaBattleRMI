@@ -58,7 +58,34 @@ public class battleField implements Serializable{
         int res = 0; // ship by this direction not found
         String content = "◼";
         Object value;
+        if(c.row > 1 && c.column > 1) {
+            Cell tmpCell = new Cell(c.row-1, c.column-1);
+            if(field.get(tmpCell) != null)
+                return -1;
+        }
+        if(c.row > 1) {
+            Cell tmpCell = new Cell(c.row-1, c.column);
+            if(field.get(tmpCell) != null)
+                return -1;
+        }
+        if(c.row > 1 && c.column < 10) {
+            Cell tmpCell = new Cell(c.row-1, c.column+1);
+            if(field.get(tmpCell) != null)
+                return -1;
+        }
         while(content.equals("◼") && sh.getSize() < maxShipSize && c.row < 11) {
+            if (c.column > 1) {
+                Cell tmpCell = new Cell(c.row, c.column-1);
+                if (field.get(tmpCell) != null) {
+                    return -1;
+                }
+            }
+            if (c.column > 10) {
+                Cell tmpCell = new Cell(c.row, c.column+1);
+                if (field.get(tmpCell) != null) {
+                    return -1;
+                }
+            }
             sh.incSize();
             field.put(c, sh);
             res = 1; //found ship
@@ -82,7 +109,20 @@ public class battleField implements Serializable{
         int res = 0; // ship by this direction not found
         String content = "◼";
         Object value;
+        if(c.row > 1 && c.column > 1) {
+            Cell tmpCell = new Cell(c.row-1, c.column-1);
+            if(field.get(tmpCell) != null)
+                return -1;
+        }
         while(content.equals("◼") && sh.getSize() < maxShipSize && c.column < 11) {
+            if(c.row > 1 && c.column < 10) {
+                Cell tmpCell = new Cell(c.row-1, c.column);
+                if(field.get(tmpCell) != null)
+                    return -1;
+                tmpCell.column += 1;
+                if(field.get(tmpCell) != null)
+                    return -1;
+            }
             sh.incSize();
             field.put(c, sh);
             if(sh.getSize() > 1)

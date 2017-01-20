@@ -277,17 +277,27 @@ public class ClientForm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_turnButtonActionPerformed
 
+    public static void clearTable(final javax.swing.JTable table) {
+        for (int i = 1; i < table.getRowCount(); i++) {
+            for (int j = 1; j < table.getColumnCount(); j++) {
+                table.setValueAt("", i, j);
+            }
+        }
+    }
+    
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         try {
-            saveButton.setEnabled(false);
-            myTable.setEnabled(false);
             // Add checking result later (rules for field)
             boolean approved = clientService.sendTableData();
             if(approved) {
                 saveButton.setEnabled(false);
                 myTable.setEnabled(false);
-            } else
+                statusLabel.setText("Поле корректно");
+            } else {
                 statusLabel.setText("Некорректное поле! Повторите попытку");
+                clearTable(myTable);
+            }
+            
         } catch(RemoteException e) {
             System.out.println("Error!Can't send battlefield to server!");
         }
