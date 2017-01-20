@@ -12,7 +12,7 @@ import java.io.Serializable;
  * @author al1as
  */
 public class Ship implements Serializable {
-    private int size = 1; // how many alive cells has ship from 0 to 4
+    private int size = 0; // how many alive cells has ship from 0 to 4
     
     public int getSize() {
         return size;

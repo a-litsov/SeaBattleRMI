@@ -31,7 +31,7 @@ public class battleField implements Serializable{
                     Ship sh;
                     if(field.get(c) == null) {
                         sh = new Ship();
-                        field.put(c, sh);
+                      //  field.put(c, sh);
                         scanNear(c, sh, data);
                     } 
                 }
@@ -55,53 +55,46 @@ public class battleField implements Serializable{
     }
    
     private boolean scanByColumn(Cell c, Ship sh, Object[][] data) {
-        if (c.row + 1 > 10) {
-            return false;
-        }
-        Cell newCell = new Cell(c.row + 1, c.column);
-        String content = "";
-        Object value = data[newCell.row][newCell.column];
-        content = "";
-        if (value != null) {
-            content = value.toString();
-        }
         boolean res = false;
-        while(content.equals("◼") && sh.getSize() < maxShipSize && newCell.row < 11) {
+        String content = "◼";
+        Object value;
+        while(content.equals("◼") && sh.getSize() < maxShipSize && c.row < 11) {
             sh.incSize();
-            field.put(newCell, sh);
+            field.put(c, sh);
             res = true;
             
-            newCell = new Cell(newCell.row + 1, newCell.column);
-            value = data[newCell.row][newCell.column];
-            content = "";
-            if (value != null) {
-                content = value.toString();
+            c = new Cell(c.row + 1, c.column);
+            if(c.row >= 11)
+                break;
+            else {
+                value = data[c.row][c.column];
+                content = "";
+                if (value != null) {
+                    content = value.toString();
+                }
             }
         }
         return res;
     }
     
     private boolean scanByRow(Cell c, Ship sh, Object[][] data) {
-        if(c.column + 1 > 10)
-            return false;
-        Cell newCell = new Cell(c.row, c.column + 1);
-        String content = "";
-        Object value = data[newCell.row][newCell.column];
-        content = "";
-        if (value != null) {
-            content = value.toString();
-        }
         boolean res = false;
-        while(content.equals("◼") && sh.getSize() < maxShipSize && newCell.column < 11) {
+        String content = "◼";
+        Object value;
+        while(content.equals("◼") && sh.getSize() < maxShipSize && c.column < 11) {
             sh.incSize();
-            field.put(newCell, sh);
+            field.put(c, sh);
             res = true;
             
-            newCell = new Cell(newCell.row, newCell.column + 1);
-            value = data[newCell.row][newCell.column];
-            content = "";
-            if (value != null) {
-                content = value.toString();
+            c = new Cell(c.row, c.column + 1);
+            if(c.column >= 11)
+                break;
+            else {
+                value = data[c.row][c.column];
+                content = "";
+                if (value != null) {
+                    content = value.toString();
+                }
             }
         }
         return res;
