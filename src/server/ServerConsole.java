@@ -60,9 +60,11 @@ public class ServerConsole extends UnicastRemoteObject implements IServerConsole
     }
     
     @Override
-    public void sendTableData(Object[][] data, int playerId) throws RemoteException {
+    public boolean sendTableData(Object[][] data, int playerId) throws RemoteException {
         playersBF[playerId] = new battleField();
-        playersBF[playerId].initByTableData(data);
+        boolean approved = playersBF[playerId].initByTableData(data);
+        if(!approved) // not appropriate field
+            return false;
         // giving the first turn
         if(++countBF == playersMaxCount) {
             Random rn = new Random();
@@ -70,6 +72,7 @@ public class ServerConsole extends UnicastRemoteObject implements IServerConsole
             clientObjects[firstTurnPlayerId].getReadyForTurn();
             victimId = playersConnected - firstTurnPlayerId - 1;
         }
+        return true;
     }
     
     public int makeTurn(int row, int column) throws RemoteException {

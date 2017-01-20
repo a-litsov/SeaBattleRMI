@@ -19,7 +19,6 @@ public class battleField implements Serializable{
     Hashtable<Cell, Ship> field = new Hashtable<Cell, Ship>();
     
     public boolean initByTableData(Object[][] data) {
-        boolean res = true;
         for(int i = 1; i < 11; i++)
             for(int j = 1; j < 11; j++) {
                 Object value = data[i][j];
@@ -32,11 +31,12 @@ public class battleField implements Serializable{
                     if(field.get(c) == null) {
                         sh = new Ship();
                       //  field.put(c, sh);
-                        scanNear(c, sh, data);
+                        if(!scanNear(c, sh, data))
+                            return false;
                     } 
                 }
             }
-        return true; // signals if field correct or not
+        return true;
     }
     
     public Ship getAndRemoveShip(int row, int column) {
@@ -54,14 +54,15 @@ public class battleField implements Serializable{
         return (field.size() == 0);
     }
    
-    private boolean scanByColumn(Cell c, Ship sh, Object[][] data) {
-        boolean res = false;
+    private int scanByColumn(Cell c, Ship sh, Object[][] data) {
+        int res = 0; // ship by this direction not found
         String content = "◼";
         Object value;
         while(content.equals("◼") && sh.getSize() < maxShipSize && c.row < 11) {
             sh.incSize();
             field.put(c, sh);
-            res = true;
+            res = 1; //found ship
+            // res = -1 if error and return
             
             c = new Cell(c.row + 1, c.column);
             if(c.row >= 11)
@@ -77,14 +78,16 @@ public class battleField implements Serializable{
         return res;
     }
     
-    private boolean scanByRow(Cell c, Ship sh, Object[][] data) {
-        boolean res = false;
+    private int scanByRow(Cell c, Ship sh, Object[][] data) {
+        int res = 0; // ship by this direction not found
         String content = "◼";
         Object value;
         while(content.equals("◼") && sh.getSize() < maxShipSize && c.column < 11) {
             sh.incSize();
             field.put(c, sh);
-            res = true;
+            if(sh.getSize() > 1)
+                res = 1; //found ship
+            // res = -1 if error and return
             
             c = new Cell(c.row, c.column + 1);
             if(c.column >= 11)
@@ -99,9 +102,18 @@ public class battleField implements Serializable{
         }
         return res;
     }
-    private void scanNear(Cell c, Ship sh, Object[][] data) {
-        if(!scanByRow(c, sh, data))
-            scanByColumn(c, sh, data);
+    private boolean scanNear(Cell c, Ship sh, Object[][] data) {
+        int flag = scanByRow(c, sh, data);
+        if(flag == -1)
+            return false;
+        else
+            if(flag == 0) {
+                sh.decSize(); // scanByRow increased this value
+                flag = scanByColumn(c, sh, data);
+                if(flag == -1)
+                    return false;
+            }
+        return true;
     }
     
 }

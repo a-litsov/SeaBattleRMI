@@ -282,7 +282,12 @@ public class ClientForm extends javax.swing.JFrame {
             saveButton.setEnabled(false);
             myTable.setEnabled(false);
             // Add checking result later (rules for field)
-            clientService.sendTableData();
+            boolean approved = clientService.sendTableData();
+            if(approved) {
+                saveButton.setEnabled(false);
+                myTable.setEnabled(false);
+            } else
+                statusLabel.setText("Некорректное поле! Повторите попытку");
         } catch(RemoteException e) {
             System.out.println("Error!Can't send battlefield to server!");
         }

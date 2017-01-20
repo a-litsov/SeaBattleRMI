@@ -12,7 +12,7 @@ import shared.battleField;
  */
 public interface IClientService extends Remote {
     public void getReadyForTurn() throws RemoteException;
-    public void sendTableData() throws RemoteException;
+    public boolean sendTableData() throws RemoteException;
     public Object[][] getTableData() throws RemoteException;
     public int makeTurn(int row, int column) throws RemoteException;
     public void takeDamage(int row, int column, int damage) throws RemoteException;

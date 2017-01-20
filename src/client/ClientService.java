@@ -116,9 +116,9 @@ public class ClientService extends UnicastRemoteObject implements IClientService
         return tableData;
     }
     
-    public void sendTableData() throws RemoteException {
+    public boolean sendTableData() throws RemoteException {
         Object[][] data = convertTableData(myTable);
-        serverObject.sendTableData(data, playerId);
+        return serverObject.sendTableData(data, playerId);
     }
     
     public Object[][] getTableData() throws RemoteException {
